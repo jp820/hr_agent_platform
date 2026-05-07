@@ -38,20 +38,6 @@ def chat_endpoint(request: QueryRequest):
 
 
 '''
-Sample curated_prompts API call:
-curl --location 'http://localhost:8000/hr-chat' \
---header 'Content-Type: application/json' \
---data '{
-    "user_profile": {
-        "dietPreference": "Non-Vegetarian",
-        "currentDiet": "High Protein",
-        "dietGoal": "muscle gain",
-        "taste": ["Italian pasta", "Neapolitan pizza", "Marathi meals"]
-    },
-    "personlised_search_credits": true,
-    "timeStr": "09:35 AM",
-    "day": "Friday"
-}'
 
 Sample hr-chat API call:
 curl --location 'http://localhost:8000/hr-chat' \
