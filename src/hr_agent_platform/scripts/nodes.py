@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 # LLM & CLIENTS
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", temperature=0)
 genai_client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY"))
+vectorstore = None
 
 # DATABASE HELPERS
 def get_db_connection():
@@ -210,12 +211,18 @@ def policy_node(state: AgentState):
     
     embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-2")
     try:
-        vectorstore = FAISS.load_local(index_path, embeddings, allow_dangerous_deserialization=True)
+        if not os.path.exists(index_path):
+            raise FileNotFoundError("FAISS index not found.")
+        global vectorstore
+        if vectorstore is None:
+            vectorstore = FAISS.load_local(index_path, embeddings, allow_dangerous_deserialization=True)
+            logger.info(f"Loading FAISS.")
         docs = vectorstore.similarity_search(query, k=3)
+        logger.info(f"Docs : {docs}")
         context = "\\n".join([d.page_content for d in docs])
     except Exception as e:
         context = "No policies found."
-        print(f"Error loading FAISS: {e}")
+        logger.error(f"Error loading FAISS: {e}")
 
     prompt = f"""
     You are an HR Policy Agent. Answer the user's question based strictly on the provided policy context.

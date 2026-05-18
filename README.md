@@ -65,4 +65,12 @@ The agent follows a modular graph-based architecture using **LangGraph**:
    streamlit run src/hr_agent_platform/app/streamlit_app.py
    ```
 
+## TO DO
+1. Leave request history
+2. Weekend & Holiday exclusion while calculating leave days
+3. Role based authentication. HR, Admin and Employee
+4. Summarization of past conversations to increase LLM efficiency
+5. Human in loop for approval of leave/travel requests
+6. Proper error handling and logging
+
 ---
